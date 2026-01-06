@@ -35,22 +35,5 @@ public class TransaksiController extends BaseController {
 
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-
-        try {
-        Transaksi t = new Transaksi();
-        t.setTanggal(java.time.LocalDate.parse(req.getParameter("tanggal")));
-        t.setJumlah(new java.math.BigDecimal(req.getParameter("jumlah")));
-        t.setKeterangan(req.getParameter("keterangan"));
-        t.setIdKategori(Integer.parseInt(req.getParameter("id_kategori")));
-
-        transaksiDAO.insert(t);
-        resp.sendRedirect("transaksi");
-        } catch (SQLException e) {
-            throw new ServletException("Gagal menyimpan transaksi", e);
-        }
-    }
 }
 
