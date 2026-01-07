@@ -62,4 +62,8 @@ public class TransaksiDAO {
 
         return 0;
     }
+
+    public void insert(Transaksi t) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

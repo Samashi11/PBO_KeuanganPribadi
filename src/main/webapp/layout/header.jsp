@@ -23,7 +23,7 @@
                 class="bg-white/20 backdrop-blur-md rounded-xl p-4 text-white border border-white/10"
                 >
                 <span class="text-sm text-blue-100 block">Total Balance</span>
-                <span class="text-2xl font-bold">$42,850.00</span>
+                <span class="text-2xl font-bold">Rp800.000.00</span>
             </div>
         </div>
     </div>

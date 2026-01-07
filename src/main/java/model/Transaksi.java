@@ -62,4 +62,8 @@ public class Transaksi {
     public void setKategori(Kategori kategori) {
         this.kategori = kategori;
     }
+
+    public void setDeskripsi(String keterangan) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

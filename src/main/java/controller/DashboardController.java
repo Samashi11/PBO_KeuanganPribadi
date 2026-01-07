@@ -23,7 +23,7 @@ public class DashboardController extends BaseController {
         req.setAttribute("totalAnggaran", anggaranDAO.countAll());
         req.setAttribute("totalKategori", kategoriDAO.countAll());
 
-        render(req, resp, "pages/dashboard.jsp");
+        render(req, resp, "/pages/dashboard.jsp");
         req.setAttribute("activePage", "dashboard");
     }
 }

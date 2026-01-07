@@ -144,7 +144,7 @@
                     class="px-5 py-2.5 text-sm font-medium text-white bg-primary hover:bg-primary-hover rounded-xl shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all flex items-center gap-2"
                     type="submit"
                     >
-                    <span class="material-icons-round text-base">check</span> Save
+                    <span class="materialza-icons-round text-base">check</span> Save
                     Transaction
                 </button>
             </div>
