@@ -6,6 +6,18 @@ public class Kategori {
     private String namaKategori;
     private String tipe; // PEMASUKAN / PENGELUARAN
 
+    // Constructor kosong (WAJIB buat JavaBean)
+    public Kategori() {
+    }
+
+    // Constructor lengkap
+    public Kategori(int idKategori, String namaKategori, String tipe) {
+        this.idKategori = idKategori;
+        this.namaKategori = namaKategori;
+        this.tipe = tipe;
+    }
+
+    // Getter & Setter
     public int getIdKategori() {
         return idKategori;
     }

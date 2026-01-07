@@ -5,6 +5,7 @@
 package controller;
 
 import dao.TransaksiDAO;
+import dao.KategoriDAO;
 import model.Transaksi;
 
 import jakarta.servlet.ServletException;
@@ -18,22 +19,33 @@ import java.util.List;
 @WebServlet("/transaksi")
 public class TransaksiController extends BaseController {
 
-    private TransaksiDAO transaksiDAO = new TransaksiDAO();
+    private final KategoriDAO kategoriDAO = new KategoriDAO();
+
+//    @Override
+//    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+//            throws IOException {
+//
+//        req.setAttribute("kategoriList", kategoriDAO.findAll());
+//
+//        render(req, resp, "/pages/transaksi.jsp");
+//    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        List<Transaksi> list;
-        try {
-            list = transaksiDAO.findAll();
-            req.setAttribute("listTransaksi", list);
-            render(req, resp, "/pages/transaksi.jsp");
-        } catch (SQLException e) {
-            throw new ServletException("Gagal mengambil data transaksi", e);
-        }
-
+        // load data riwayat (transaksi)
+        // TIDAK PERLU load anggaran
+        // SIDEBAR SUDAH DIHANDLE FILTER
+        forward(req, resp, "/index.jsp?halaman=riwayat");
+        req.setAttribute("activePage", "transaksi");
     }
 
-}
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
 
+        // nanti lewat Service
+        redirect(resp, req.getContextPath() + "/riwayat");
+    }
+}

@@ -1,15 +1,12 @@
 <%
-//tangkap request dari url
-    String hal = request.getParameter("halaman");
-    String url = hal + ".jsp";
-    if (hal != null) {
-//diarahkan sesuai request,jika ada request di url
+    String contentPage = (String) request.getAttribute("contentPage");
+    if (contentPage != null) {
 %>
-<jsp:include page="${contentPage}" />
+    <jsp:include page="<%= contentPage %>" />
 <%
-} else { // tidak ada request di url, diarahkan ke hal home
+    } else {
 %>
-<%@include file="../pages/dashboard.jsp" %>
+    <%@ include file="../pages/dashboard.jsp" %>
 <%
     }
-%> 
+%>

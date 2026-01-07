@@ -1,11 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 public class Anggaran {
 
@@ -13,6 +8,17 @@ public class Anggaran {
     private Kategori kategori;
     private BigDecimal jumlahAnggaran;
     private BigDecimal sisaAnggaran;
+
+    public Anggaran() {
+    }
+
+    public Anggaran(int idAnggaran, Kategori kategori,
+                     BigDecimal jumlahAnggaran, BigDecimal sisaAnggaran) {
+        this.idAnggaran = idAnggaran;
+        this.kategori = kategori;
+        this.jumlahAnggaran = jumlahAnggaran;
+        this.sisaAnggaran = sisaAnggaran;
+    }
 
     public int getIdAnggaran() {
         return idAnggaran;
@@ -45,17 +51,4 @@ public class Anggaran {
     public void setSisaAnggaran(BigDecimal sisaAnggaran) {
         this.sisaAnggaran = sisaAnggaran;
     }
-    
-    public int getPersentaseTerpakai() {
-    if (jumlahAnggaran == null || sisaAnggaran == null) return 0;
-
-    BigDecimal terpakai = jumlahAnggaran.subtract(sisaAnggaran);
-
-    return terpakai
-        .multiply(new BigDecimal(100))
-        .divide(jumlahAnggaran, 0, RoundingMode.HALF_UP)
-        .intValue();
-    }
-
 }
-

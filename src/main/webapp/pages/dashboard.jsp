@@ -1,4 +1,6 @@
-<main class="lg:col-span-2 xl:col-span-3 space-y-6">
+<main
+    class="flex-grow bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm p-6"
+    >
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div
             class="bg-surface-light dark:bg-surface-dark p-5 rounded-xl shadow-soft border border-gray-100 dark:border-gray-700 flex items-center justify-between"

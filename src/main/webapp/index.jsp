@@ -78,47 +78,48 @@
              >
             <%@ include file="layout/header.jsp" %>
             <%@ include file="layout/navbar.jsp" %>
-            <div class="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                <%@ include file="layout/main.jsp" %>
-                <%@ include file="layout/sidebar.jsp" %>
+            <!--<div class="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-6">-->
+                <div class="flex flex-col lg:flex-row gap-4 h-full">
+                    <jsp:include page="layout/main.jsp" />
+                    <jsp:include page="layout/sidebar.jsp" />
+                </div>
+                <%@ include file="layout/footer.jsp" %>
             </div>
-            <%@ include file="layout/footer.jsp" %>
-        </div>
-        <script>
-            // Check local storage or system preference
-            if (
-                    localStorage.theme === "dark" ||
-                    (!("theme" in localStorage) &&
-                            window.matchMedia("(prefers-color-scheme: dark)").matches)
-                    ) {
-                document.documentElement.classList.add("dark");
-            } else {
-                document.documentElement.classList.remove("dark");
-            }
-            // Simple toggle button for demo (fixed position)
-            const toggleBtn = document.createElement("button");
-            toggleBtn.className =
-                    "fixed bottom-4 right-4 p-3 rounded-full bg-primary text-white shadow-lg z-50 hover:bg-primary-dark transition-colors";
-            toggleBtn.innerHTML =
-                    '<span class="material-icons-round">dark_mode</span>';
-            toggleBtn.onclick = () => {
-                document.documentElement.classList.toggle("dark");
+            <script>
+                // Check local storage or system preference
+                if (
+                        localStorage.theme === "dark" ||
+                        (!("theme" in localStorage) &&
+                                window.matchMedia("(prefers-color-scheme: dark)").matches)
+                        ) {
+                    document.documentElement.classList.add("dark");
+                } else {
+                    document.documentElement.classList.remove("dark");
+                }
+                // Simple toggle button for demo (fixed position)
+                const toggleBtn = document.createElement("button");
+                toggleBtn.className =
+                        "fixed bottom-4 right-4 p-3 rounded-full bg-primary text-white shadow-lg z-50 hover:bg-primary-dark transition-colors";
+                toggleBtn.innerHTML =
+                        '<span class="material-icons-round">dark_mode</span>';
+                toggleBtn.onclick = () => {
+                    document.documentElement.classList.toggle("dark");
+                    if (document.documentElement.classList.contains("dark")) {
+                        localStorage.theme = "dark";
+                        toggleBtn.innerHTML =
+                                '<span class="material-icons-round">light_mode</span>';
+                    } else {
+                        localStorage.theme = "light";
+                        toggleBtn.innerHTML =
+                                '<span class="material-icons-round">dark_mode</span>';
+                    }
+                };
+                document.body.appendChild(toggleBtn);
+                // Set initial icon
                 if (document.documentElement.classList.contains("dark")) {
-                    localStorage.theme = "dark";
                     toggleBtn.innerHTML =
                             '<span class="material-icons-round">light_mode</span>';
-                } else {
-                    localStorage.theme = "light";
-                    toggleBtn.innerHTML =
-                            '<span class="material-icons-round">dark_mode</span>';
                 }
-            };
-            document.body.appendChild(toggleBtn);
-            // Set initial icon
-            if (document.documentElement.classList.contains("dark")) {
-                toggleBtn.innerHTML =
-                        '<span class="material-icons-round">light_mode</span>';
-            }
-        </script>
+            </script>
     </body>
 </html>

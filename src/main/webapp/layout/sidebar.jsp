@@ -1,8 +1,12 @@
 <%@ page import="java.util.List" %>
-<%@ page import="java.math.BigDecimal,java.math.RoundingMode" %>
+<%@ page import="java.math.BigDecimal" %>
+<%@ page import="java.math.RoundingMode" %>
 <%@ page import="model.Anggaran" %>
 
+
+
 <aside class="lg:col-span-1 xl:col-span-1 space-y-6">    
+
     <div
         class="bg-surface-light dark:bg-surface-dark p-6 rounded-xl shadow-soft border border-gray-100 dark:border-gray-700"
         >
@@ -60,46 +64,77 @@
             <h2
                 class="text-lg font-semibold text-text-light dark:text-text-dark"
                 >
-                Savings Goals
+                Anggaran
+
             </h2>
         </div>
 
         <%
-        List<Anggaran> listAnggaran =
-            (List<Anggaran>) request.getAttribute("listAnggaran");
-        %>
-        <div class="space-y-5">
-            <% if (listAnggaran != null) {
-               for (Anggaran a : listAnggaran) {
+            List<Anggaran> anggaranList
+                    = (List<Anggaran>) request.getAttribute("listAnggaran");
 
-                BigDecimal total = a.getJumlahAnggaran();
-                BigDecimal sisa  = a.getSisaAnggaran();
+//            out.println("DEBUG SIZE: "
+//                    + (anggaranList == null ? "NULL" : anggaranList.size()));
+        %>
+
+
+
+        <div class="space-y-6">
+            <%
+                if (anggaranList != null && !anggaranList.isEmpty()) {
+                    for (Anggaran a : anggaranList) {
+
+                        BigDecimal total = a.getJumlahAnggaran();
+                        BigDecimal sisa = a.getSisaAnggaran();
+
+                        if (total == null || total.compareTo(BigDecimal.ZERO) == 0) {
+            %>
+            DEBUG TOTAL: <%= total%> | SISA: <%= sisa%><br>
+            <%
+                    continue; // skip data rusak
+                }
+
                 BigDecimal terpakai = total.subtract(sisa);
 
                 int persen = terpakai
-                    .multiply(new BigDecimal(100))
-                    .divide(total, 0, RoundingMode.HALF_UP)
-                    .intValue();
+                        .multiply(new BigDecimal(100))
+                        .divide(total, 0, RoundingMode.HALF_UP)
+                        .intValue();
             %>
 
-            <div>
-              <div class="flex justify-between text-sm mb-1">
-                <span class="font-medium text-text-light dark:text-text-dark">
-                  <%= a.getKategori().getNamaKategori() %>
-                </span>
-                <span class="text-muted-light dark:text-muted-dark">
-                  Rp <%= terpakai %> / Rp <%= total %>
-                </span>
-              </div>
-
-              <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                <div class="bg-primary h-2 rounded-full"
-                     style="width: <%= persen %>%">
+            <div class="bg-surface-light dark:bg-surface-dark p-3 rounded-xl shadow-soft">
+                <div class="flex justify-between items-center text-sm mb-2">
+                    <span class="font-medium">
+                        <%= a.getKategori().getNamaKategori()%>
+                    </span>
+                    <span class="text-xs text-muted-light dark:text-muted-dark">
+                        Rp <%= terpakai%> / Rp <%= total%>
+                    </span>
                 </div>
-              </div>
+
+                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
+                    <div class="bg-primary h-2 rounded-full transition-all duration-300"
+                         style="width: <%= Math.min(persen, 100)%>%">
+                    </div>
+                </div>
+
+                <div class="mt-1 text-xs text-muted-light dark:text-muted-dark text-right">
+                    <%= persen%>% terpakai
+                </div>
             </div>
 
-            <% } } %>
+            <%
+                }
+            } else {
+            %>
+
+            <div class="text-sm text-muted-light dark:text-muted-dark">
+                Belum ada data anggaran
+            </div>
+
+            <%
+                }
+            %>
         </div>
     </div>
     <div

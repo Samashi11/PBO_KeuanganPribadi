@@ -1,42 +1,53 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dao;
 
-import util.KoneksiDB;
 import model.Kategori;
+import util.KoneksiDB;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class KategoriDAO {
 
-    public Kategori findById(int id) throws SQLException {
+    public List<Kategori> findAll() {
+        List<Kategori> list = new ArrayList<>();
 
-        String sql = "SELECT * FROM kategori WHERE id_kategori = ?";
+        String sql = "SELECT id_kategori, nama_kategori, tipe " +
+                     "FROM kategori " +
+                     "ORDER BY nama_kategori";
 
-        try (Connection c = KoneksiDB.getConnection();
-             PreparedStatement ps = c.prepareStatement(sql)) {
+        try (Connection conn = KoneksiDB.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
 
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
+            while (rs.next()) {
                 Kategori k = new Kategori();
                 k.setIdKategori(rs.getInt("id_kategori"));
                 k.setNamaKategori(rs.getString("nama_kategori"));
                 k.setTipe(rs.getString("tipe"));
-                return k;
+                list.add(k);
             }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return null;
+
+        return list;
     }
-    
-    public int countAll() throws SQLException {
+
+    public int countAll() {
         String sql = "SELECT COUNT(*) FROM kategori";
-        try (Connection c = KoneksiDB.getConnection(); PreparedStatement ps = c.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
-            rs.next();
-            return rs.getInt(1);
+
+        try (Connection conn = KoneksiDB.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            if (rs.next()) return rs.getInt(1);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+
+        return 0;
     }
 }

@@ -1,24 +1,26 @@
 package model;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.sql.Date;
 
 public class Transaksi {
 
     private int idTransaksi;
-    private LocalDate tanggal;
+    private Date tanggal;
     private BigDecimal jumlah;
     private String keterangan;
     private Kategori kategori;
 
-    // WAJIB: constructor kosong TANPA EXCEPTION
     public Transaksi() {
     }
 
-    // OPTIONAL: untuk keperluan tertentu (misal rekap)
-    public Transaksi(LocalDate tanggal, BigDecimal jumlah) {
+    public Transaksi(int idTransaksi, Date tanggal, BigDecimal jumlah,
+                     String keterangan, Kategori kategori) {
+        this.idTransaksi = idTransaksi;
         this.tanggal = tanggal;
         this.jumlah = jumlah;
+        this.keterangan = keterangan;
+        this.kategori = kategori;
     }
 
     public int getIdTransaksi() {
@@ -29,11 +31,11 @@ public class Transaksi {
         this.idTransaksi = idTransaksi;
     }
 
-    public LocalDate getTanggal() {
+    public Date getTanggal() {
         return tanggal;
     }
 
-    public void setTanggal(LocalDate tanggal) {
+    public void setTanggal(Date tanggal) {
         this.tanggal = tanggal;
     }
 
