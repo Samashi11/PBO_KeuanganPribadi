@@ -9,15 +9,29 @@ public class Anggaran {
     private BigDecimal jumlahAnggaran;
     private BigDecimal sisaAnggaran;
 
+    // 🔴 TAMBAHAN (WAJIB secara domain)
+    private int idUser;
+
     public Anggaran() {
     }
 
     public Anggaran(int idAnggaran, Kategori kategori,
-                     BigDecimal jumlahAnggaran, BigDecimal sisaAnggaran) {
+            BigDecimal jumlahAnggaran, BigDecimal sisaAnggaran) {
         this.idAnggaran = idAnggaran;
         this.kategori = kategori;
         this.jumlahAnggaran = jumlahAnggaran;
         this.sisaAnggaran = sisaAnggaran;
+    }
+
+    // 🔴 constructor tambahan (opsional tapi sehat)
+    public Anggaran(int idAnggaran, Kategori kategori,
+            BigDecimal jumlahAnggaran, BigDecimal sisaAnggaran,
+            int idUser) {
+        this.idAnggaran = idAnggaran;
+        this.kategori = kategori;
+        this.jumlahAnggaran = jumlahAnggaran;
+        this.sisaAnggaran = sisaAnggaran;
+        this.idUser = idUser;
     }
 
     public int getIdAnggaran() {
@@ -50,5 +64,13 @@ public class Anggaran {
 
     public void setSisaAnggaran(BigDecimal sisaAnggaran) {
         this.sisaAnggaran = sisaAnggaran;
+    }
+
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
     }
 }

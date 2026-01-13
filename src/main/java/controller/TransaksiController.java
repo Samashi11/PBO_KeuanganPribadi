@@ -36,14 +36,8 @@ public class TransaksiController extends BaseController {
         }
 
         // ... kodingan atas tetap sama ...
-// 2. Setup Tampilan
-        req.setAttribute("contentPage", "/pages/transaksi.jsp");
         req.setAttribute("activePage", "transaksi");
-
-// JANGAN PAKAI INI:
-// render(req, resp, "index.jsp");
-// PAKAI INI (Manual Dispatch):
-        req.getRequestDispatcher("/index.jsp").forward(req, resp);
+        render(req, resp, "/pages/transaksi.jsp");
     }
 
     @Override

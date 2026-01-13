@@ -11,16 +11,30 @@ public class Transaksi {
     private String keterangan;
     private Kategori kategori;
 
+    // 🔴 TAMBAHAN WAJIB (sesuai DB)
+    private int idUser;
+
     public Transaksi() {
     }
 
     public Transaksi(int idTransaksi, Date tanggal, BigDecimal jumlah,
-                     String keterangan, Kategori kategori) {
+            String keterangan, Kategori kategori) {
         this.idTransaksi = idTransaksi;
         this.tanggal = tanggal;
         this.jumlah = jumlah;
         this.keterangan = keterangan;
         this.kategori = kategori;
+    }
+
+    // 🔴 Constructor tambahan (AMAN)
+    public Transaksi(int idTransaksi, Date tanggal, BigDecimal jumlah,
+            String keterangan, Kategori kategori, int idUser) {
+        this.idTransaksi = idTransaksi;
+        this.tanggal = tanggal;
+        this.jumlah = jumlah;
+        this.keterangan = keterangan;
+        this.kategori = kategori;
+        this.idUser = idUser;
     }
 
     public int getIdTransaksi() {
@@ -65,5 +79,20 @@ public class Transaksi {
 
     public void setDeskripsi(String keterangan) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
+    }
+
+    /**
+     * 🔴 Penjinak error Jangan hapus method lama, tapi buat alias yang BENAR
+     */
+    public String getDeskripsi() {
+        return this.keterangan;
     }
 }

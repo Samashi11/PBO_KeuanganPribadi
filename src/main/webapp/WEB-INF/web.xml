@@ -1,8 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
-   version="6.0">
+<web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
+    <filter>
+        <filter-name>AuthFilter</filter-name>
+        <filter-class>filter.AuthFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>SidebarFilter</filter-name>
+        <filter-class>filter.SidebarFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>SidebarFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <servlet>
+        <servlet-name>AboutController</servlet-name>
+        <servlet-class>controller.AboutController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DashboardController</servlet-name>
+        <servlet-class>controller.DashboardController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RiwayatController</servlet-name>
+        <servlet-class>controller.RiwayatController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>TransaksiController</servlet-name>
+        <servlet-class>controller.TransaksiController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AuthController</servlet-name>
+        <servlet-class>controller.AuthController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AboutController</servlet-name>
+        <url-pattern>/AboutController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DashboardController</servlet-name>
+        <url-pattern>/DashboardController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RiwayatController</servlet-name>
+        <url-pattern>/RiwayatController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TransaksiController</servlet-name>
+        <url-pattern>/TransaksiController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AuthController</servlet-name>
+        <url-pattern>/AuthController</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

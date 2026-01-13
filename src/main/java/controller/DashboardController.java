@@ -7,6 +7,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import model.User;
 
 @WebServlet("/dashboard")
 public class DashboardController extends BaseController {
@@ -19,12 +20,18 @@ public class DashboardController extends BaseController {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
 
-        req.setAttribute("totalTransaksi", transaksiDAO.countAll());
-        req.setAttribute("totalAnggaran", anggaranDAO.countAll());
-        req.setAttribute("totalKategori", kategoriDAO.countAll());
+        User user = (User) req.getSession(false).getAttribute("user");
 
-        render(req, resp, "/pages/dashboard.jsp");
+        if (user != null) {
+            req.setAttribute("totalTransaksi",
+                    transaksiDAO.countByUserId(user.getIdUser()));
+            req.setAttribute("totalAnggaran",
+                    anggaranDAO.countByUserId(user.getIdUser()));
+            req.setAttribute("totalKategori",
+                    kategoriDAO.countByUserId(user.getIdUser()));
+        }
+
         req.setAttribute("activePage", "dashboard");
+        render(req, resp, "/pages/dashboard.jsp");
     }
 }
-

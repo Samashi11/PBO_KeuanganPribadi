@@ -6,18 +6,29 @@ public class Kategori {
     private String namaKategori;
     private String tipe; // PEMASUKAN / PENGELUARAN
 
+    // 🔴 TAMBAHAN (WAJIB sesuai DB)
+    private int idUser;
+
     // Constructor kosong (WAJIB buat JavaBean)
     public Kategori() {
     }
 
-    // Constructor lengkap
+    // Constructor lama (JANGAN DIHAPUS)
     public Kategori(int idKategori, String namaKategori, String tipe) {
         this.idKategori = idKategori;
         this.namaKategori = namaKategori;
         this.tipe = tipe;
     }
 
-    // Getter & Setter
+    // 🔴 Constructor tambahan (opsional, tapi sehat)
+    public Kategori(int idKategori, String namaKategori, String tipe, int idUser) {
+        this.idKategori = idKategori;
+        this.namaKategori = namaKategori;
+        this.tipe = tipe;
+        this.idUser = idUser;
+    }
+
+    // Getter & Setter existing
     public int getIdKategori() {
         return idKategori;
     }
@@ -40,5 +51,14 @@ public class Kategori {
 
     public void setTipe(String tipe) {
         this.tipe = tipe;
+    }
+
+    // 🔴 Getter & Setter tambahan
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
     }
 }

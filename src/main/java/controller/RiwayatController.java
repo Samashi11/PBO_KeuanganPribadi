@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import model.User;
 
 @WebServlet("/riwayat")
 public class RiwayatController extends BaseController {
@@ -25,10 +26,15 @@ public class RiwayatController extends BaseController {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
 
-        req.setAttribute("transaksiList", transaksiDAO.findAll());
+        User user = (User) req.getSession(false).getAttribute("user");
 
-        render(req, resp, "/pages/riwayat.jsp");
+        if (user != null) {
+            req.setAttribute("transaksiList",
+                    transaksiDAO.findByUserId(user.getIdUser()));
+        }
+
         req.setAttribute("activePage", "riwayat");
+        render(req, resp, "/pages/riwayat.jsp");
+
     }
 }
-
