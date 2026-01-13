@@ -33,7 +33,7 @@ public class RiwayatController extends BaseController {
                     transaksiDAO.findByUserId(user.getIdUser()));
         }
 
-        req.setAttribute("activePage", "riwayat");
+        req.setAttribute("activePage", "reports");
         render(req, resp, "/pages/riwayat.jsp");
 
     }
