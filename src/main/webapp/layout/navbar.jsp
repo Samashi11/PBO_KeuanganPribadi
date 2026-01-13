@@ -51,12 +51,6 @@
 
         </c:if>
 
-
-        <a href="${pageContext.request.contextPath}/logout"
-           class="px-4 py-2">
-            Logout
-        </a>
-
         <!-- About -->
         <a
             href="${pageContext.request.contextPath}/about"
@@ -66,6 +60,11 @@
                     : "text-muted-light dark:text-muted-dark hover:bg-gray-100 dark:hover:bg-gray-800"%>"
             >
             About
+        </a>
+
+        <a href="${pageContext.request.contextPath}/logout"
+           class="px-4 py-2">
+            Logout
         </a>
 
     </div>
