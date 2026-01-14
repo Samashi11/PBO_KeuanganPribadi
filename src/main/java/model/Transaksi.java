@@ -10,8 +10,6 @@ public class Transaksi {
     private BigDecimal jumlah;
     private String keterangan;
     private Kategori kategori;
-
-    // 🔴 TAMBAHAN WAJIB (sesuai DB)
     private int idUser;
 
     public Transaksi() {
@@ -26,7 +24,6 @@ public class Transaksi {
         this.kategori = kategori;
     }
 
-    // 🔴 Constructor tambahan (AMAN)
     public Transaksi(int idTransaksi, Date tanggal, BigDecimal jumlah,
             String keterangan, Kategori kategori, int idUser) {
         this.idTransaksi = idTransaksi;
@@ -44,6 +41,15 @@ public class Transaksi {
     public void setIdTransaksi(int idTransaksi) {
         this.idTransaksi = idTransaksi;
     }
+
+    // ==========================================================
+    // 👇 INI YANG DITAMBAHKAN (ALIAS)
+    // Supaya ${t.id} di JSP bisa baca data idTransaksi
+    // ==========================================================
+    public int getId() {
+        return idTransaksi;
+    }
+    // ==========================================================
 
     public Date getTanggal() {
         return tanggal;
@@ -77,10 +83,6 @@ public class Transaksi {
         this.kategori = kategori;
     }
 
-    public void setDeskripsi(String keterangan) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
     public int getIdUser() {
         return idUser;
     }
@@ -89,9 +91,7 @@ public class Transaksi {
         this.idUser = idUser;
     }
 
-    /**
-     * 🔴 Penjinak error Jangan hapus method lama, tapi buat alias yang BENAR
-     */
+    // Alias untuk Deskripsi (yang kamu buat sebelumnya)
     public String getDeskripsi() {
         return this.keterangan;
     }
