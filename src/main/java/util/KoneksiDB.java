@@ -9,7 +9,7 @@ public class KoneksiDB {
     private static final String URL =
         "jdbc:postgresql://localhost:5432/keuangan_pribadi";
     private static final String USER = "postgres";
-    private static final String PASS = "bismillah";
+    private static final String PASS = "ayudrian28";
 
     static {
         try {
