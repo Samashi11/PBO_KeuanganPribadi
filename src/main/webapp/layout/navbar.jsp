@@ -85,7 +85,7 @@
         <button
             class="p-2 text-muted-light dark:text-muted-dark hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors relative"
             >
-            <span class="material-icons-round">notifications</span>
+            <span class="material-icons-round">notifikasi</span>
             <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
         </button>
 

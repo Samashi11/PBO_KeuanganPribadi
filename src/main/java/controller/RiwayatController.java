@@ -35,6 +35,6 @@ public class RiwayatController extends BaseController {
 
         req.setAttribute("activePage", "reports");
         render(req, resp, "/pages/riwayat.jsp");
-
+//test
     }
 }

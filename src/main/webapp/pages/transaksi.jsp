@@ -90,7 +90,7 @@
 
                 <div class="col-span-1 md:col-span-2">
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" for="payee">
-                        Payee / Description
+                        Description
                     </label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">

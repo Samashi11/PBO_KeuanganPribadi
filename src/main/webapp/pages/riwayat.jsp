@@ -120,7 +120,8 @@
 
     <div class="flex items-center justify-between mt-6 pt-4 border-t border-gray-100 dark:border-gray-700">
         <p class="text-sm text-gray-500 dark:text-gray-400">
-            Showing all data
+            Showing
         </p>
     </div>
 </main>
+

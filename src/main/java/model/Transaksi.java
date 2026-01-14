@@ -91,8 +91,9 @@ public class Transaksi {
         this.idUser = idUser;
     }
 
-    // Alias untuk Deskripsi (yang kamu buat sebelumnya)
+    //untuk Deskripsi
     public String getDeskripsi() {
         return this.keterangan;
     }
 }
+
