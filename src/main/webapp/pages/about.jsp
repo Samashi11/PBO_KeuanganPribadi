@@ -40,7 +40,7 @@
 
     <!-- TIM DEVELOPER -->
     <div class="bg-white dark:bg-surface-dark rounded-xl shadow-soft p-8 border border-gray-100 dark:border-gray-700">
-        <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-6 text-center">👨‍💻 Tim Pengembang</h2>
+        <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-6 text-center">Tim Pengembang</h2>
         
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
             <!-- Developer 1 (Cowo) - Project Manager -->

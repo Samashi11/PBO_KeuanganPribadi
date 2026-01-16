@@ -93,7 +93,10 @@
             <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700 text-center">
                 <p class="text-sm text-muted-light dark:text-muted-dark">
                     Don't have an account? 
-                    <a class="font-semibold text-primary hover:text-primary-dark transition-colors ml-1" href="#">Create an account</a>
+                    <a class="font-semibold text-primary hover:text-primary-dark transition-colors ml-1" 
+                       href="${pageContext.request.contextPath}/register">
+                        Create an account
+                    </a>
                 </p>
             </div>
         </div>

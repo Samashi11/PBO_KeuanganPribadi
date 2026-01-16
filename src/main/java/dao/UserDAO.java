@@ -121,5 +121,138 @@ public class UserDAO {
         }
         return null;
     }
+
+    /**
+     * GANTI PASSWORD USER 
+     * 1. Verifikasi password lama dengan BCrypt 
+     * 2. Hash password baru dengan BCrypt 
+     * 3. Update ke database
+     */
+    public boolean changePassword(int idUser, String currentPlainPassword, String newPlainPassword) throws Exception {
+        // 1. Verifikasi password saat ini
+        User user = findById(idUser);
+        if (user == null) {
+            return false;
+        }
+
+        // Verifikasi password lama dengan BCrypt
+        if (!BCrypt.checkpw(currentPlainPassword, user.getPasswordHash())) {
+            return false;
+        }
+
+        // 2. Hash password baru dengan BCrypt
+        String newPasswordHash = BCrypt.hashpw(newPlainPassword, BCrypt.gensalt());
+
+        // 3. Update ke database
+        String sql = "UPDATE users SET password_hash = ? WHERE id_user = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, newPasswordHash);
+            ps.setInt(2, idUser);
+
+            int rowsUpdated = ps.executeUpdate();
+            return rowsUpdated > 0;
+        }
+    }
+
+    /**
+     * Verifikasi password saat ini saja (untuk validasi di form)
+     */
+    public boolean verifyCurrentPassword(int idUser, String currentPlainPassword) throws Exception {
+        User user = findById(idUser);
+        if (user == null) {
+            return false;
+        }
+        return BCrypt.checkpw(currentPlainPassword, user.getPasswordHash());
+    }
+
+    /**
+     * Update profil user (nama lengkap dan email)
+     */
+    public boolean updateProfile(int idUser, String namaLengkap, String email) throws Exception {
+        String sql = "UPDATE users SET nama_lengkap = ?, email = ? WHERE id_user = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, namaLengkap);
+            ps.setString(2, email);
+            ps.setInt(3, idUser);
+
+            int rowsUpdated = ps.executeUpdate();
+            return rowsUpdated > 0;
+        }
+    }
+
+    /**
+     * Cek apakah username sudah ada (untuk registrasi)
+     */
+    public boolean isUsernameExists(String username) throws Exception {
+        String sql = "SELECT COUNT(*) FROM users WHERE username = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Cek apakah email sudah ada (untuk registrasi)
+     */
+    public boolean isEmailExists(String email) throws Exception {
+        String sql = "SELECT COUNT(*) FROM users WHERE email = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Registrasi user baru
+     * @return ID user yang baru dibuat, atau -1 jika gagal
+     */
+    public int registerUser(String username, String plainPassword, String namaLengkap, String email) throws Exception {
+        // 1. Cek apakah username sudah ada
+        if (isUsernameExists(username)) {
+            throw new Exception("Username sudah digunakan");
+        }
+
+        // 2. Cek apakah email sudah ada
+        if (isEmailExists(email)) {
+            throw new Exception("Email sudah terdaftar");
+        }
+
+        // 3. Hash password dengan BCrypt
+        String passwordHash = BCrypt.hashpw(plainPassword, BCrypt.gensalt());
+
+        // 4. Default role = User (asumsi id_role = 2, admin = 1)
+        int defaultRoleId = 2;
+
+        String sql = "INSERT INTO users (username, password_hash, nama_lengkap, email, id_role) VALUES (?, ?, ?, ?, ?)";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, username);
+            ps.setString(2, passwordHash);
+            ps.setString(3, namaLengkap);
+            ps.setString(4, email);
+            ps.setInt(5, defaultRoleId);
+
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected > 0) {
+                // Ambil ID yang baru dibuat
+                ResultSet generatedKeys = ps.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1);
+                }
+            }
+            return -1;
+        }
+    }
 }
 //test
