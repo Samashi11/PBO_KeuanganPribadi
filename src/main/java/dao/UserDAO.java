@@ -11,13 +11,50 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import util.KoneksiDB;
 
 public class UserDAO {
 
-    private final Connection conn;
+//    private final Connection conn;
+//    public UserDAO() throws SQLException {
+//        this.conn = KoneksiDB.getConnection();
+//    }
+    public List<User> findAll() {
+        List<User> list = new ArrayList<>();
 
-    public UserDAO(Connection conn) {
-        this.conn = conn;
+        String sql
+                = "SELECT u.id_user, u.username, u.nama_lengkap, u.email, "
+                + "r.id_role, r.nama_role "
+                + "FROM users u "
+                + "JOIN roles r ON u.id_role = r.id_role "
+                + "ORDER BY u.username";
+
+        try (Connection conn = KoneksiDB.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Role role = new Role(
+                        rs.getInt("id_role"),
+                        rs.getString("nama_role")
+                );
+
+                User u = new User();
+                u.setIdUser(rs.getInt("id_user"));
+                u.setUsername(rs.getString("username"));
+                u.setNamaLengkap(rs.getString("nama_lengkap"));
+                u.setEmail(rs.getString("email"));
+                u.setRole(role);
+
+                list.add(u);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
     }
 
     /**
@@ -38,7 +75,7 @@ public class UserDAO {
                 + "JOIN roles r ON u.id_role = r.id_role "
                 + "WHERE u.username = ?";
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = KoneksiDB.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
 
@@ -98,7 +135,7 @@ public class UserDAO {
                 + "JOIN roles r ON u.id_role = r.id_role "
                 + "WHERE u.id_user = ?";
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = KoneksiDB.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, idUser);
             ResultSet rs = ps.executeQuery();
 
@@ -123,10 +160,8 @@ public class UserDAO {
     }
 
     /**
-     * GANTI PASSWORD USER 
-     * 1. Verifikasi password lama dengan BCrypt 
-     * 2. Hash password baru dengan BCrypt 
-     * 3. Update ke database
+     * GANTI PASSWORD USER 1. Verifikasi password lama dengan BCrypt 2. Hash
+     * password baru dengan BCrypt 3. Update ke database
      */
     public boolean changePassword(int idUser, String currentPlainPassword, String newPlainPassword) throws Exception {
         // 1. Verifikasi password saat ini
@@ -145,7 +180,7 @@ public class UserDAO {
 
         // 3. Update ke database
         String sql = "UPDATE users SET password_hash = ? WHERE id_user = ?";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = KoneksiDB.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, newPasswordHash);
             ps.setInt(2, idUser);
 
@@ -170,7 +205,7 @@ public class UserDAO {
      */
     public boolean updateProfile(int idUser, String namaLengkap, String email) throws Exception {
         String sql = "UPDATE users SET nama_lengkap = ?, email = ? WHERE id_user = ?";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = KoneksiDB.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, namaLengkap);
             ps.setString(2, email);
             ps.setInt(3, idUser);
@@ -185,7 +220,7 @@ public class UserDAO {
      */
     public boolean isUsernameExists(String username) throws Exception {
         String sql = "SELECT COUNT(*) FROM users WHERE username = ?";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = KoneksiDB.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
 
@@ -201,7 +236,7 @@ public class UserDAO {
      */
     public boolean isEmailExists(String email) throws Exception {
         String sql = "SELECT COUNT(*) FROM users WHERE email = ?";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = KoneksiDB.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
 
@@ -214,6 +249,7 @@ public class UserDAO {
 
     /**
      * Registrasi user baru
+     *
      * @return ID user yang baru dibuat, atau -1 jika gagal
      */
     public int registerUser(String username, String plainPassword, String namaLengkap, String email) throws Exception {
@@ -235,7 +271,8 @@ public class UserDAO {
 
         String sql = "INSERT INTO users (username, password_hash, nama_lengkap, email, id_role) VALUES (?, ?, ?, ?, ?)";
 
-        try (PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+        try (Connection conn = KoneksiDB.getConnection(); PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS
+        )) {
             ps.setString(1, username);
             ps.setString(2, passwordHash);
             ps.setString(3, namaLengkap);
@@ -254,5 +291,36 @@ public class UserDAO {
             return -1;
         }
     }
+
+    public List<User> findAllUserOnly() {
+        List<User> list = new ArrayList<>();
+
+        String sql
+                = "SELECT u.id_user, u.username "
+                + "FROM users u "
+                + "JOIN roles r ON u.id_role = r.id_role "
+                + "WHERE r.nama_role = 'USER' "
+                + "ORDER BY u.username";
+
+        try (Connection conn = KoneksiDB.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                User u = new User();
+                u.setIdUser(rs.getInt("id_user"));
+                u.setUsername(rs.getString("username"));
+                list.add(u);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    public void updateProfile(User user) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }
 //test

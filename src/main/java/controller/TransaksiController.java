@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dao.AnggaranDAO;
 import dao.TransaksiDAO;
 import dao.KategoriDAO;
 import model.Transaksi;
@@ -16,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.List;
 import model.User;
 
 @WebServlet("/transaksi")
@@ -23,6 +25,7 @@ public class TransaksiController extends BaseController {
 
     private final KategoriDAO kategoriDAO = new KategoriDAO();
     private final TransaksiDAO transaksiDAO = new TransaksiDAO();
+    private final AnggaranDAO anggaranDAO = new AnggaranDAO();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -34,22 +37,24 @@ public class TransaksiController extends BaseController {
         // 1. CEK APAKAH ADA PERMINTAAN HAPUS (DELETE)?
         // ==================================================================
         if ("delete".equals(action)) {
-            try {
-                String idStr = req.getParameter("id");
-                int id = Integer.parseInt(idStr);
-                transaksiDAO.delete(id);
 
-                resp.sendRedirect(req.getContextPath() + "/riwayat");
-                return; // Stop di sini
-            } catch (Exception e) {
-                e.printStackTrace();
-                resp.sendRedirect(req.getContextPath() + "/riwayat");
-                return;
+            int id = Integer.parseInt(req.getParameter("id"));
+            User user = (User) req.getSession().getAttribute("user");
+
+            Transaksi t = transaksiDAO.findById(id);
+
+            if (t != null && "PENGELUARAN".equals(t.getKategori().getTipe())) {
+                anggaranDAO.tambahAnggaran(
+                        t.getKategori().getIdKategori(),
+                        user.getIdUser(),
+                        t.getJumlah()
+                );
             }
 
-            // ==================================================================
-            // 2. CEK APAKAH ADA PERMINTAAN EDIT (AMBIL DATA LAMA)?
-            // ==================================================================
+            transaksiDAO.delete(id);
+
+            resp.sendRedirect(req.getContextPath() + "/riwayat");
+            return; // ⬅⬅⬅ INI KRITIS
         } else if ("edit".equals(action)) {
             try {
                 String idStr = req.getParameter("id");
@@ -84,6 +89,11 @@ public class TransaksiController extends BaseController {
             e.printStackTrace();
         }
 
+        List<Transaksi> list = transaksiDAO.findByUserId(
+                ((User) req.getSession().getAttribute("user")).getIdUser()
+        );
+
+        req.setAttribute("transaksiList", list);
         req.setAttribute("activePage", "transaksi");
         render(req, resp, "/pages/transaksi.jsp");
     }
@@ -93,53 +103,74 @@ public class TransaksiController extends BaseController {
             throws IOException {
 
         try {
-            // A. AMBIL DATA DARI FORM HTML
-            // Cek apakah ada ID (hidden input). Kalau ada = Update, Kalau tidak = Insert
             String idStr = req.getParameter("id");
-
             String keteranganStr = req.getParameter("keterangan");
             String jumlahStr = req.getParameter("jumlah");
             String tanggalStr = req.getParameter("tanggal");
             String kategoriIdStr = req.getParameter("kategori_id");
 
-            // B. KONVERSI TIPE DATA
             Date tanggal = Date.valueOf(tanggalStr);
-            BigDecimal jumlah = new BigDecimal(jumlahStr);
+            BigDecimal jumlahBaru = new BigDecimal(jumlahStr);
             int kategoriId = Integer.parseInt(kategoriIdStr);
 
-            // C. MENYIAPKAN OBJEK
-            Kategori k = new Kategori();
-            k.setIdKategori(kategoriId);
             User user = (User) req.getSession().getAttribute("user");
+
+            Kategori kategori = kategoriDAO.findById(kategoriId);
 
             Transaksi t = new Transaksi();
             t.setKeterangan(keteranganStr);
-            t.setJumlah(jumlah);
+            t.setJumlah(jumlahBaru);
             t.setTanggal(tanggal);
-            t.setKategori(k);
+            t.setKategori(kategori);
 
-            // D. LOGIKA CABANG: UPDATE ATAU INSERT?
-            if (idStr != null && !idStr.isEmpty()) {
-                // --- KASUS EDIT (UPDATE) ---
-                int id = Integer.parseInt(idStr);
-                t.setIdTransaksi(id); // Set ID biar DAO tau baris mana yg diupdate
+            // ==========================
+            // INSERT
+            // ==========================
+            if (idStr == null || idStr.isEmpty()) {
 
-                transaksiDAO.update(t); // Panggil method UPDATE
-            } else {
-                // --- KASUS BARU (INSERT) ---
                 t.setIdUser(user.getIdUser());
-                transaksiDAO.insert(t); // Panggil method INSERT
+                transaksiDAO.insert(t);
+
+                if ("PENGELUARAN".equals(kategori.getTipe())) {
+                    anggaranDAO.kurangiAnggaran(
+                            kategoriId,
+                            user.getIdUser(),
+                            jumlahBaru
+                    );
+                }
+
+            } // ==========================
+            // UPDATE (EDIT)
+            // ==========================
+            else {
+                int id = Integer.parseInt(idStr);
+                t.setIdTransaksi(id);
+
+                // 🔴 AMBIL DATA LAMA
+                Transaksi old = transaksiDAO.findById(id);
+
+                BigDecimal jumlahLama = old.getJumlah();
+                BigDecimal delta = jumlahBaru.subtract(jumlahLama);
+
+                transaksiDAO.update(t);
+
+                if ("PENGELUARAN".equals(kategori.getTipe())) {
+                    anggaranDAO.updateByDelta(
+                            kategoriId,
+                            user.getIdUser(),
+                            delta
+                    );
+                }
             }
 
-            // E. SUKSES -> KEMBALI KE RIWAYAT BIAR LIHAT HASILNYA
             resp.sendRedirect(req.getContextPath() + "/riwayat");
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Gagal proses transaksi: " + e.getMessage());
             resp.sendRedirect(req.getContextPath() + "/transaksi?status=error");
         }
     }
+
 }
 
 // tes update git

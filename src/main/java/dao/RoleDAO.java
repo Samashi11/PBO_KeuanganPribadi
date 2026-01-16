@@ -9,6 +9,8 @@ import model.Role;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import model.User;
 
 public class RoleDAO {
 
@@ -50,5 +52,17 @@ public class RoleDAO {
             }
         }
         return null;
+    }
+
+    public void updateProfile(User user) throws SQLException {
+
+        String sql = "UPDATE users SET nama_lengkap = ?, email = ? WHERE id_user = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, user.getNamaLengkap());
+            ps.setString(2, user.getEmail());
+            ps.setInt(3, user.getIdUser());
+            ps.executeUpdate();
+        }
     }
 }

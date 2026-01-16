@@ -13,7 +13,7 @@ import java.util.List;
 
 public abstract class BaseController extends HttpServlet {
 
-    private final AnggaranDAO anggaranDAO = new AnggaranDAO();
+    final AnggaranDAO anggaranDAO = new AnggaranDAO();
 
     protected void prepareSidebar(HttpServletRequest req) {
         Object obj = req.getSession(false).getAttribute("user");

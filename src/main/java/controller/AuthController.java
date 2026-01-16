@@ -77,7 +77,7 @@ public class AuthController extends HttpServlet {
 
         try (Connection conn = KoneksiDB.getConnection()) {
 
-            UserDAO userDAO = new UserDAO(conn);
+            UserDAO userDAO = new UserDAO();
             User user = userDAO.authenticate(username, password);
 
             if (user == null) {
@@ -89,6 +89,8 @@ public class AuthController extends HttpServlet {
             // ✅ LOGIN BERHASIL
             HttpSession session = request.getSession(true);
             session.setAttribute("user", user);
+            session.setAttribute("role", user.getRole().getNamaRole());
+            session.setAttribute("username", user.getUsername());
 
             AnggaranDAO anggaranDAO = new AnggaranDAO();
 

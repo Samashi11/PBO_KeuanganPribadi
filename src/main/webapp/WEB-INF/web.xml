@@ -8,6 +8,30 @@
         <filter-name>SidebarFilter</filter-name>
         <filter-class>filter.SidebarFilter</filter-class>
     </filter>
+    <filter>
+        <filter-name>HeaderDataFilter</filter-name>
+        <filter-class>filter.HeaderDataFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>UserListFilter</filter-name>
+        <filter-class>filter.UserListFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>AdminFilter</filter-name>
+        <filter-class>filter.AdminFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AdminFilter</filter-name>
+        <url-pattern>/admin/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>UserListFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>HeaderDataFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     <filter-mapping>
         <filter-name>SidebarFilter</filter-name>
         <url-pattern>/*</url-pattern>
@@ -40,6 +64,14 @@
         <servlet-name>AnggaranController</servlet-name>
         <servlet-class>controller.AnggaranController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ProfileController</servlet-name>
+        <servlet-class>controller.ProfileController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminUserController</servlet-name>
+        <servlet-class>controller.AdminUserController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AboutController</servlet-name>
         <url-pattern>/AboutController</url-pattern>
@@ -63,6 +95,14 @@
     <servlet-mapping>
         <servlet-name>AnggaranController</servlet-name>
         <url-pattern>/AnggaranController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProfileController</servlet-name>
+        <url-pattern>/ProfileController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminUserController</servlet-name>
+        <url-pattern>/AdminUserController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

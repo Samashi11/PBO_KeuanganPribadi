@@ -1,69 +1,6 @@
 <!-- Cari bagian header/navbar di file dashboard.jsp Anda -->
 <!-- Biasanya di atas atau sebelum <div class="flex-grow bg-surface-dark rounded-xl shadow-sm p-6"> -->
 
-<div class="flex justify-between items-center px-6 py-4 bg-surface-dark rounded-t-xl border-b border-gray-200 dark:border-gray-700">
-    <!-- Kiri: Logo/Brand -->
-    <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
-            <span class="material-icons-round text-white">account_balance</span>
-        </div>
-        <div>
-            <h2 class="text-xl font-bold text-text-light dark:text-text-dark">Dashboard</h2>
-            <p class="text-sm text-muted-light dark:text-muted-dark">Welcome back, ${sessionScope.user.namaLengkap}</p>
-        </div>
-    </div>
-    
-    <!-- Kanan: User Menu -->
-    <div class="relative group">
-        <!-- User Avatar/Button -->
-        <button class="flex items-center space-x-3 px-4 py-2 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-all">
-            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-primary to-blue-400 flex items-center justify-center text-white font-bold">
-                ${sessionScope.user.namaLengkap.charAt(0)}
-            </div>
-            <div class="text-left">
-                <p class="font-medium text-text-light dark:text-text-dark">${sessionScope.user.namaLengkap}</p>
-                <p class="text-xs text-muted-light dark:text-muted-dark">${sessionScope.user.role.namaRole}</p>
-            </div>
-            <span class="material-icons-round text-muted-light dark:text-muted-dark">expand_more</span>
-        </button>
-        
-        <!-- Dropdown Menu -->
-        <div class="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-card border border-gray-100 dark:border-gray-700 py-2 hidden group-hover:block z-50">
-            <div class="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
-                <p class="font-medium text-text-light dark:text-text-dark">${sessionScope.user.namaLengkap}</p>
-                <p class="text-sm text-muted-light dark:text-muted-dark">${sessionScope.user.email}</p>
-            </div>
-            
-            <a href="${pageContext.request.contextPath}/profile" 
-               class="flex items-center px-4 py-3 text-text-light dark:text-text-dark hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                <span class="material-icons-round mr-3 text-muted-light dark:text-muted-dark">person</span>
-                <span>Profil Saya</span>
-            </a>
-            
-            <!-- MENU GANTI PASSWORD -->
-            <a href="${pageContext.request.contextPath}/change-password" 
-               class="flex items-center px-4 py-3 text-text-light dark:text-text-dark hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                <span class="material-icons-round mr-3 text-muted-light dark:text-muted-dark">lock_reset</span>
-                <span>Ganti Password</span>
-            </a>
-            
-            <a href="${pageContext.request.contextPath}/settings" 
-               class="flex items-center px-4 py-3 text-text-light dark:text-text-dark hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                <span class="material-icons-round mr-3 text-muted-light dark:text-muted-dark">settings</span>
-                <span>Pengaturan</span>
-            </a>
-            
-            <div class="border-t border-gray-100 dark:border-gray-700 my-2"></div>
-            
-            <a href="${pageContext.request.contextPath}/logout" 
-               class="flex items-center px-4 py-3 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
-                <span class="material-icons-round mr-3">logout</span>
-                <span>Keluar</span>
-            </a>
-        </div>
-    </div>
-</div>
-
 <script>
 // Script untuk toggle dropdown jika diklik
 document.addEventListener('DOMContentLoaded', function() {

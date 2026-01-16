@@ -48,7 +48,7 @@
                 <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center border-4 border-white dark:border-gray-700">
                     <span class="material-icons-round text-3xl text-blue-600 dark:text-blue-300">manage_accounts</span>
                 </div>
-                <h3 class="font-bold text-gray-800 dark:text-white mb-1">Salman As-Shidqi</h3>
+                <h3 class="font-bold text-gray-800 dark:text-white mb-1">Salman Maula As-Shidqi</h3>
                 <p class="text-sm text-blue-600 dark:text-blue-400 font-medium mb-2">Project Manager</p>
                 <p class="text-xs text-gray-500 dark:text-gray-400">Mengatur timeline dan koordinasi tim</p>
             </div>

@@ -1,5 +1,6 @@
 package dao;
 
+import java.math.BigDecimal;
 import model.Transaksi;
 import model.Kategori;
 import util.KoneksiDB;
@@ -171,11 +172,37 @@ public class TransaksiDAO {
         return 0;
     }
 
+    public BigDecimal getSaldoByUserId(int idUser) {
+        String sql
+                = "SELECT COALESCE(SUM("
+                + "CASE "
+                + "WHEN k.tipe = 'PEMASUKAN' THEN t.jumlah "
+                + "WHEN k.tipe = 'PENGELUARAN' THEN -t.jumlah "
+                + "END), 0) AS saldo "
+                + "FROM transaksi t "
+                + "JOIN kategori k ON t.id_kategori = k.id_kategori "
+                + "WHERE t.id_user = ?";
+
+        try (Connection conn = KoneksiDB.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, idUser);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getBigDecimal("saldo");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return BigDecimal.ZERO;
+    }
+
     // ==========================================
     // 5. TAMBAH DATA (CREATE)
     // ==========================================
     public void insert(Transaksi t) {
-        // Query disesuaikan dengan kolom di tabel transaksi kamu
         String sql = "INSERT INTO transaksi (tanggal, jumlah, keterangan, id_kategori, id_user) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = KoneksiDB.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -186,14 +213,8 @@ public class TransaksiDAO {
             ps.setInt(4, t.getKategori().getIdKategori());
             ps.setInt(5, t.getIdUser());
 
-            AnggaranDAO anggaranDAO = new AnggaranDAO();
-            anggaranDAO.kurangiAnggaran(
-                    t.getKategori().getIdKategori(),
-                    t.getIdUser(),
-                    t.getJumlah()
-            );
-
             ps.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

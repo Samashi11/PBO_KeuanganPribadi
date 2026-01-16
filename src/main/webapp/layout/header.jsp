@@ -1,4 +1,4 @@
-<%--<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>--%>
+<%@taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <header
     class="w-full bg-gradient-to-r from-primary to-indigo-600 dark:from-blue-700 dark:to-indigo-800 rounded-2xl shadow-lg p-6 sm:p-10 relative overflow-hidden"
@@ -14,9 +14,9 @@
         >
         <div>
             <%--<c:if test="${not empty sessionScope.user}">--%>
-                <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">
-                    Selamat Datang, ${sessionScope.user.username}
-                </h1>
+            <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">
+                Selamat Datang, ${sessionScope.user.username}
+            </h1>
             <%--</c:if>--%>
 
             <p class="text-blue-100 text-lg">
@@ -27,8 +27,8 @@
             <div
                 class="bg-white/20 backdrop-blur-md rounded-xl p-4 text-white border border-white/10"
                 >
-                <span class="text-sm text-blue-100 block">Total Balance</span>
-                <span class="text-2xl font-bold">Rp800.000.00</span>
+                <span class="text-sm text-blue-100 block">Total Saldo</span>
+                <span class="text-2xl font-bold">Rp <fmt:formatNumber value="${headerSaldo}" pattern="#,###" /></span>
             </div>
         </div>
     </div>

@@ -207,4 +207,40 @@ public class AnggaranDAO {
         }
     }
 
+    public void updateByDelta(int idKategori, int idUser, BigDecimal delta) {
+        String sql = "UPDATE anggaran "
+                + "SET sisa_anggaran = sisa_anggaran - ? "
+                + "WHERE id_kategori = ? AND id_user = ?";
+
+        try (Connection conn = KoneksiDB.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setBigDecimal(1, delta);
+            ps.setInt(2, idKategori);
+            ps.setInt(3, idUser);
+
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void tambahAnggaran(int idKategori, int idUser, BigDecimal jumlah) {
+        String sql = "UPDATE anggaran "
+                + "SET sisa_anggaran = sisa_anggaran + ? "
+                + "WHERE id_kategori = ? AND id_user = ?";
+
+        try (Connection conn = KoneksiDB.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setBigDecimal(1, jumlah);
+            ps.setInt(2, idKategori);
+            ps.setInt(3, idUser);
+
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

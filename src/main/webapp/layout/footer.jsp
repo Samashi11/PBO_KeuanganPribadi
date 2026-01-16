@@ -1,7 +1,7 @@
 <footer
     class="w-full bg-surface-light dark:bg-surface-dark rounded-xl shadow-soft border border-gray-100 dark:border-gray-700 p-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-light dark:text-muted-dark"
     >
-    <div>© 2025 Kelompok 1 - Aplikasi Manajemen Keuangan Pribadi.</div>
+    <div>© 2026 Kelompok 1 - Aplikasi Manajemen Keuangan Pribadi.</div>
     <div class="flex gap-6">
         <a class="hover:text-primary transition-colors" href="#"
            >Privacy Policy</a

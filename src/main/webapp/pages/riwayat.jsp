@@ -85,9 +85,19 @@
                                 ${t.kategori.namaKategori}
                             </td>
 
-                            <td class="py-4 text-right font-medium text-red-500">
-                                - Rp <fmt:formatNumber value="${t.jumlah}" pattern="#,###" />
+                            <td class="py-4 text-right font-medium
+                                ${t.kategori.tipe == 'PEMASUKAN' ? 'text-green-500' : 'text-red-500'}">
+
+                                <c:choose>
+                                    <c:when test="${t.kategori.tipe == 'PEMASUKAN'}">
+                                        + Rp <fmt:formatNumber value="${t.jumlah}" pattern="#,###" />
+                                    </c:when>
+                                    <c:otherwise>
+                                        - Rp <fmt:formatNumber value="${t.jumlah}" pattern="#,###" />
+                                    </c:otherwise>
+                                </c:choose>
                             </td>
+
 
                             <td class="py-4 text-center">
                                 <span class="px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-600">
@@ -102,7 +112,7 @@
                                     <span class="material-icons-round text-lg">edit</span>
                                 </a>
 
-                               
+
                                 <a href="${pageContext.request.contextPath}/transaksi?action=delete&id=${t.id}" 
                                    onclick="return confirm('Yakin mau hapus data ini?')"
                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full hover:bg-red-100 text-gray-400 hover:text-red-500 transition-colors"

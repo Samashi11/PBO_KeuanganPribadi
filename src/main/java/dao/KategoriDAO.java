@@ -69,4 +69,26 @@ public class KategoriDAO {
         return 0;
     }
 
+    public Kategori findById(int id) {
+        String sql = "SELECT id_kategori, nama_kategori, tipe FROM kategori WHERE id_kategori = ?";
+
+        try (Connection conn = KoneksiDB.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Kategori k = new Kategori();
+                    k.setIdKategori(rs.getInt("id_kategori"));
+                    k.setNamaKategori(rs.getString("nama_kategori"));
+                    k.setTipe(rs.getString("tipe"));
+                    return k;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
