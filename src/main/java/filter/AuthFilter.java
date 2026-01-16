@@ -32,12 +32,21 @@ public class AuthFilter implements Filter {
         String path = req.getRequestURI()
                 .substring(req.getContextPath().length());
 
-        // 🔴 Allowlist (JANGAN DISENTUH SEMBARANGAN)
+        // 🔴 Allowlist (TAMBAHKAN /register di sini!)
         if (path.startsWith("/login")
+                || path.startsWith("/register")      // ← TAMBAHKAN INI!
                 || path.startsWith("/logout")
                 || path.startsWith("/assets")
                 || path.startsWith("/css")
-                || path.startsWith("/js")) {
+                || path.startsWith("/js")
+                || path.startsWith("/auth/")         // ← TAMBAHKAN INI!
+                || path.endsWith(".css")
+                || path.endsWith(".js")
+                || path.endsWith(".png")
+                || path.endsWith(".jpg")
+                || path.endsWith(".jpeg")
+                || path.endsWith(".gif")
+                || path.endsWith(".ico")) {
 
             chain.doFilter(request, response);
             return;
