@@ -1,3 +1,5 @@
+<%--<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>--%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <header
     class="w-full bg-gradient-to-r from-primary to-indigo-600 dark:from-blue-700 dark:to-indigo-800 rounded-2xl shadow-lg p-6 sm:p-10 relative overflow-hidden"
     >
@@ -11,9 +13,12 @@
         class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
         >
         <div>
-            <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">
-                Selamat Datang!
-            </h1>
+            <%--<c:if test="${not empty sessionScope.user}">--%>
+                <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">
+                    Selamat Datang, ${sessionScope.user.username}
+                </h1>
+            <%--</c:if>--%>
+
             <p class="text-blue-100 text-lg">
                 Ayo Catat Transaksi Keuangan agar tidak boros.
             </p>

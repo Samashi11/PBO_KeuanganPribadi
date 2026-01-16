@@ -43,29 +43,40 @@
             Reports
         </a>
 
-        <c:if test="${sessionScope.role == 'ADMIN'}">
-
-            <a href="${pageContext.request.contextPath}/admin/users">
-                Manajemen User
-            </a>
-
-        </c:if>
-
-        <!-- About -->
         <a
-            href="${pageContext.request.contextPath}/about"
+            href="${pageContext.request.contextPath}/anggaran"
             class="px-4 py-2 font-medium rounded-lg whitespace-nowrap transition-colors
-            <%= "about".equals(active)
+            <%= "anggaran".equals(active)
                     ? "bg-primary/10 text-primary dark:bg-primary/20 dark:text-blue-300"
                     : "text-muted-light dark:text-muted-dark hover:bg-gray-100 dark:hover:bg-gray-800"%>"
             >
-            About
+            
+            <!--<span class="material-icons-round text-lg">account_balance_wallet</span>-->
+            <span>Anggaran</span>
         </a>
 
-        <a href="${pageContext.request.contextPath}/logout"
-           class="px-4 py-2">
-            Logout
-        </a>
+        <%--<c:if test="${sessionScope.user.role.namaRole == 'ADMIN'}">--%>
+        <a href="${pageContext.request.contextPath}/admin/users">
+            <!--                Manajemen User
+                        </a>-->
+            <%--</c:if>--%>
+
+
+            <!-- About -->
+            <a
+                href="${pageContext.request.contextPath}/about"
+                class="px-4 py-2 font-medium rounded-lg whitespace-nowrap transition-colors
+                <%= "about".equals(active)
+                        ? "bg-primary/10 text-primary dark:bg-primary/20 dark:text-blue-300"
+                        : "text-muted-light dark:text-muted-dark hover:bg-gray-100 dark:hover:bg-gray-800"%>"
+                >
+                About
+            </a>
+
+            <a href="${pageContext.request.contextPath}/logout"
+               class="px-4 py-2">
+                Logout
+            </a>
 
     </div>
 
@@ -85,7 +96,7 @@
         <button
             class="p-2 text-muted-light dark:text-muted-dark hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors relative"
             >
-            <span class="material-icons-round">notifikasi</span>
+            <span class="material-icons-round">notifications</span>
             <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
         </button>
 

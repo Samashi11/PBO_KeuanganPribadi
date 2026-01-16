@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dao.AnggaranDAO;
 import dao.UserDAO;
 import model.User;
 import util.KoneksiDB;
@@ -42,7 +43,6 @@ public class AuthController extends HttpServlet {
 //            handleLogout(request, response);
 //        }
 //    }
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -89,6 +89,12 @@ public class AuthController extends HttpServlet {
             // ✅ LOGIN BERHASIL
             HttpSession session = request.getSession(true);
             session.setAttribute("user", user);
+
+            AnggaranDAO anggaranDAO = new AnggaranDAO();
+
+            if (!anggaranDAO.existsByUserId(user.getIdUser())) {
+                anggaranDAO.generateDefaultAnggaran(user.getIdUser());
+            }
 
             // Optional tapi sehat
             session.setMaxInactiveInterval(30 * 60); // 30 menit

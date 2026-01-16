@@ -28,7 +28,7 @@ public class DashboardController extends BaseController {
             req.setAttribute("totalAnggaran",
                     anggaranDAO.countByUserId(user.getIdUser()));
             req.setAttribute("totalKategori",
-                    kategoriDAO.countByUserId(user.getIdUser()));
+                    kategoriDAO.countAll());
         }
 
         req.setAttribute("activePage", "dashboard");

@@ -2,6 +2,9 @@
 <%@ page import="java.math.BigDecimal" %>
 <%@ page import="java.math.RoundingMode" %>
 <%@ page import="model.Anggaran" %>
+<%--<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>--%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 
 
 
@@ -67,6 +70,16 @@
                 Anggaran
 
             </h2>
+            <!-- tombol edit kecil -->
+            <c:if test="${sessionScope.user.role.namaRole == 'USER'}">
+                <a
+                    href="${pageContext.request.contextPath}/anggaran"
+                    class="text-gray-400 hover:text-primary transition"
+                    title="Edit Anggaran"
+                    >
+                    <span class="material-icons-round text-sm">edit</span>
+                </a>
+            </c:if>
         </div>
 
         <%
@@ -80,8 +93,7 @@
 
 
         <div class="space-y-6">
-            <%
-                if (anggaranList != null && !anggaranList.isEmpty()) {
+            <%                if (anggaranList != null && !anggaranList.isEmpty()) {
                     for (Anggaran a : anggaranList) {
 
                         BigDecimal total = a.getJumlahAnggaran();

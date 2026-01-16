@@ -50,7 +50,7 @@ public class KategoriDAO {
     }
 
     public int countByUserId(int idUser) {
-        String sql = "SELECT COUNT(*) FROM kategori WHERE id_user = ?";
+        String sql = "SELECT COUNT(*) FROM kategori";
 
         try (Connection conn = KoneksiDB.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 

@@ -43,8 +43,8 @@
                             type="number"
                             step="0.01"
                             required
-                            /* ⚠️ Value diisi otomatis jika editData ada */
                             value="${editData.jumlah}"
+                            /* ⚠️ Value diisi otomatis jika editData ada */
                         />
                     </div>
                 </div>
@@ -63,8 +63,8 @@
                             name="tanggal"
                             type="date"
                             required
-                            /* ⚠️ Value diisi otomatis jika editData ada */
                             value="${editData.tanggal}"
+                            /* ⚠️ Value diisi otomatis jika editData ada */
                         />
                     </div>
                 </div>
@@ -103,8 +103,8 @@
                             placeholder="e.g. Starbucks, Amazon, Rent"
                             type="text"
                             required
-                            /* ⚠️ Value diisi otomatis jika editData ada */
                             value="${editData.keterangan}"
+                            /* ⚠️ Value diisi otomatis jika editData ada */
                         />
                     </div>
                 </div>

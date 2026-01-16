@@ -1,5 +1,6 @@
 package dao;
 
+import java.math.BigDecimal;
 import model.Anggaran;
 import model.Kategori;
 import util.KoneksiDB;
@@ -91,6 +92,24 @@ public class AnggaranDAO {
         return list;
     }
 
+    // Kurangi sisa anggaran (pengeluaran)
+    public void kurangiAnggaran(int idKategori, int idUser, BigDecimal jumlah) {
+        String sql = "UPDATE anggaran "
+                + "SET sisa_anggaran = sisa_anggaran - ? "
+                + "WHERE id_kategori = ? AND id_user = ?";
+
+        try (Connection conn = KoneksiDB.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setBigDecimal(1, jumlah);
+            ps.setInt(2, idKategori);
+            ps.setInt(3, idUser);
+
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public int countAll() {
         String sql = "SELECT COUNT(*) FROM anggaran";
 
@@ -126,4 +145,66 @@ public class AnggaranDAO {
 
         return 0;
     }
+
+    public boolean existsByUserId(int idUser) {
+        String sql = "SELECT 1 FROM anggaran WHERE id_user = ? LIMIT 1";
+
+        try (Connection conn = KoneksiDB.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, idUser);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next(); // true kalau sudah ada
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public void generateDefaultAnggaran(int idUser) {
+        String sql
+                = "INSERT INTO anggaran (id_user, id_kategori, jumlah_anggaran, sisa_anggaran) "
+                + "SELECT ?, k.id_kategori, 0, 0 "
+                + "FROM kategori k "
+                + "WHERE k.tipe = 'PENGELUARAN' ";
+
+        try (Connection conn = KoneksiDB.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, idUser);
+            ps.executeUpdate();
+
+            System.out.println("✅ Anggaran default dibuat untuk user ID: " + idUser);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateJumlahAnggaran(
+            int idAnggaran,
+            int idUser,
+            BigDecimal jumlahBaru
+    ) {
+        String sql
+                = "UPDATE anggaran "
+                + "SET jumlah_anggaran = ?, sisa_anggaran = ? "
+                + "WHERE id_anggaran = ? AND id_user = ?";
+
+        try (Connection conn = KoneksiDB.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setBigDecimal(1, jumlahBaru);
+            ps.setBigDecimal(2, jumlahBaru); // reset sisa = total baru
+            ps.setInt(3, idAnggaran);
+            ps.setInt(4, idUser);
+
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

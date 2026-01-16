@@ -36,6 +36,10 @@
         <servlet-name>AuthController</servlet-name>
         <servlet-class>controller.AuthController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AnggaranController</servlet-name>
+        <servlet-class>controller.AnggaranController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AboutController</servlet-name>
         <url-pattern>/AboutController</url-pattern>
@@ -55,6 +59,10 @@
     <servlet-mapping>
         <servlet-name>AuthController</servlet-name>
         <url-pattern>/AuthController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AnggaranController</servlet-name>
+        <url-pattern>/AnggaranController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -7,7 +7,7 @@ package controller;
 import dao.TransaksiDAO;
 import dao.KategoriDAO;
 import model.Transaksi;
-import model.Kategori; 
+import model.Kategori;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Date;
+import model.User;
 
 @WebServlet("/transaksi")
 public class TransaksiController extends BaseController {
@@ -37,7 +38,7 @@ public class TransaksiController extends BaseController {
                 String idStr = req.getParameter("id");
                 int id = Integer.parseInt(idStr);
                 transaksiDAO.delete(id);
-                
+
                 resp.sendRedirect(req.getContextPath() + "/riwayat");
                 return; // Stop di sini
             } catch (Exception e) {
@@ -45,28 +46,28 @@ public class TransaksiController extends BaseController {
                 resp.sendRedirect(req.getContextPath() + "/riwayat");
                 return;
             }
-        
-        // ==================================================================
-        // 2. CEK APAKAH ADA PERMINTAAN EDIT (AMBIL DATA LAMA)?
-        // ==================================================================
+
+            // ==================================================================
+            // 2. CEK APAKAH ADA PERMINTAAN EDIT (AMBIL DATA LAMA)?
+            // ==================================================================
         } else if ("edit".equals(action)) {
             try {
                 String idStr = req.getParameter("id");
                 int id = Integer.parseInt(idStr);
-                
+
                 // Ambil data lama dari database berdasarkan ID
                 Transaksi t = transaksiDAO.findById(id);
-                
+
                 // Kirim data ini ke JSP biar form-nya terisi otomatis
                 req.setAttribute("editData", t);
-                
+
                 // Kirim juga list kategori buat dropdown
                 req.setAttribute("kategoriList", kategoriDAO.findAll());
-                
+
                 req.setAttribute("activePage", "transaksi");
                 render(req, resp, "/pages/transaksi.jsp");
                 return; // Stop di sini
-                
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -78,7 +79,7 @@ public class TransaksiController extends BaseController {
         try {
             // Ambil Data Kategori (Buat Dropdown Pilihan)
             req.setAttribute("kategoriList", kategoriDAO.findAll());
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -94,8 +95,8 @@ public class TransaksiController extends BaseController {
         try {
             // A. AMBIL DATA DARI FORM HTML
             // Cek apakah ada ID (hidden input). Kalau ada = Update, Kalau tidak = Insert
-            String idStr = req.getParameter("id"); 
-            
+            String idStr = req.getParameter("id");
+
             String keteranganStr = req.getParameter("keterangan");
             String jumlahStr = req.getParameter("jumlah");
             String tanggalStr = req.getParameter("tanggal");
@@ -109,23 +110,24 @@ public class TransaksiController extends BaseController {
             // C. MENYIAPKAN OBJEK
             Kategori k = new Kategori();
             k.setIdKategori(kategoriId);
+            User user = (User) req.getSession().getAttribute("user");
 
             Transaksi t = new Transaksi();
             t.setKeterangan(keteranganStr);
             t.setJumlah(jumlah);
             t.setTanggal(tanggal);
             t.setKategori(k);
-            
+
             // D. LOGIKA CABANG: UPDATE ATAU INSERT?
             if (idStr != null && !idStr.isEmpty()) {
                 // --- KASUS EDIT (UPDATE) ---
                 int id = Integer.parseInt(idStr);
                 t.setIdTransaksi(id); // Set ID biar DAO tau baris mana yg diupdate
-                
+
                 transaksiDAO.update(t); // Panggil method UPDATE
             } else {
                 // --- KASUS BARU (INSERT) ---
-                t.setIdUser(1); // ID User cuma perlu pas insert (Sementara Hardcode 1)
+                t.setIdUser(user.getIdUser());
                 transaksiDAO.insert(t); // Panggil method INSERT
             }
 

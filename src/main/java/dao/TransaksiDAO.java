@@ -23,9 +23,7 @@ public class TransaksiDAO {
                 + "JOIN kategori k ON t.id_kategori = k.id_kategori "
                 + "ORDER BY t.tanggal DESC";
 
-        try (Connection conn = KoneksiDB.getConnection(); 
-             PreparedStatement ps = conn.prepareStatement(sql); 
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = KoneksiDB.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 Kategori kategori = new Kategori(
@@ -70,8 +68,7 @@ public class TransaksiDAO {
                 + "WHERE t.id_user = ? "
                 + "ORDER BY t.tanggal DESC";
 
-        try (Connection conn = KoneksiDB.getConnection(); 
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = KoneksiDB.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, idUser);
 
@@ -106,12 +103,11 @@ public class TransaksiDAO {
     // ==========================================
     public Transaksi findById(int id) {
         String sql = "SELECT t.*, k.nama_kategori, k.tipe FROM transaksi t "
-                   + "JOIN kategori k ON t.id_kategori = k.id_kategori "
-                   + "WHERE t.id_transaksi = ?";
-        
-        try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            
+                + "JOIN kategori k ON t.id_kategori = k.id_kategori "
+                + "WHERE t.id_transaksi = ?";
+
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -142,9 +138,7 @@ public class TransaksiDAO {
     public int countAll() {
         String sql = "SELECT COUNT(*) FROM transaksi";
 
-        try (Connection conn = KoneksiDB.getConnection(); 
-             PreparedStatement ps = conn.prepareStatement(sql); 
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = KoneksiDB.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
             if (rs.next()) {
                 return rs.getInt(1);
@@ -160,8 +154,7 @@ public class TransaksiDAO {
     public int countByUserId(int idUser) {
         String sql = "SELECT COUNT(*) FROM transaksi WHERE id_user = ?";
 
-        try (Connection conn = KoneksiDB.getConnection(); 
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = KoneksiDB.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, idUser);
 
@@ -185,14 +178,20 @@ public class TransaksiDAO {
         // Query disesuaikan dengan kolom di tabel transaksi kamu
         String sql = "INSERT INTO transaksi (tanggal, jumlah, keterangan, id_kategori, id_user) VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection conn = KoneksiDB.getConnection(); 
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = KoneksiDB.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setDate(1, t.getTanggal());
             ps.setBigDecimal(2, t.getJumlah());
             ps.setString(3, t.getKeterangan());
             ps.setInt(4, t.getKategori().getIdKategori());
-            ps.setInt(5, 1); // <--- ID USER SEMENTARA (Hardcode angka 1 dulu biar jalan)
+            ps.setInt(5, t.getIdUser());
+
+            AnggaranDAO anggaranDAO = new AnggaranDAO();
+            anggaranDAO.kurangiAnggaran(
+                    t.getKategori().getIdKategori(),
+                    t.getIdUser(),
+                    t.getJumlah()
+            );
 
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -205,20 +204,19 @@ public class TransaksiDAO {
     // ==========================================
     public void update(Transaksi t) {
         String sql = "UPDATE transaksi SET tanggal=?, jumlah=?, keterangan=?, id_kategori=? "
-                   + "WHERE id_transaksi=?";
-        
-        try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            
+                + "WHERE id_transaksi=?";
+
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
             ps.setDate(1, t.getTanggal());
             ps.setBigDecimal(2, t.getJumlah());
             ps.setString(3, t.getKeterangan());
             ps.setInt(4, t.getKategori().getIdKategori());
             ps.setInt(5, t.getIdTransaksi()); // ID untuk WHERE clause
-            
+
             ps.executeUpdate();
             System.out.println("✅ Berhasil update ID: " + t.getIdTransaksi());
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -231,8 +229,7 @@ public class TransaksiDAO {
         // ⚠️ Menggunakan id_transaksi sesuai database
         String sql = "DELETE FROM transaksi WHERE id_transaksi = ?";
 
-        try (Connection conn = getConnection(); 
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
 
